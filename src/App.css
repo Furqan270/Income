@@ -298,6 +298,7 @@ body {
 
 .item-left {
   flex: 1;
+  min-width: 0;
   text-align: left;
   padding-right: 12px;
 }
@@ -307,17 +308,24 @@ body {
   font-weight: 600;
   color: #f1f5f9;
   margin-bottom: 2px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 
 .item-left p {
   font-size: 12px;
   font-weight: 500;
   color: #94a3b8;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 
 .item-right {
   display: flex;
   gap: 6px;
+  flex-shrink: 0;
 }
 
 .item-right button {
@@ -474,23 +482,4 @@ body {
   }
 }
 
-@media (min-width: 768px) {
-  /* Expand main container width on desktop for rich grid layout */
-  .App {
-    max-width: 900px;
-    padding: 32px;
-  }
-  
-  /* Side-by-side list view on desktop */
-  .transactions {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 24px;
-  }
-  
-  .income-list,
-  .expense-list {
-    flex: 1;
-    min-width: 0; /* Prevents flex items from overflowing */
-  }
-}
+/* Desktop keeps the same stacked mobile layout */
