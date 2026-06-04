@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const Expense = ({ expenses, refreshExpenses }) => {
     const [editingId, setEditingId] = useState(null);
@@ -23,13 +24,32 @@ const Expense = ({ expenses, refreshExpenses }) => {
     }, [expenses, currentPage]);
 
     const handleDelete = (id) => {
-        axios.delete(`http://localhost:3000/expense/${id}`)
-            .then(() => {
-                refreshExpenses();
-            })
-            .catch((err) => {
-                console.log("Error deleting expense:", err);
-            });
+        Swal.fire({
+            title: "Hapus expense ini?",
+            text: "Data yang dihapus tidak bisa dikembalikan!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#f43f5e",
+            cancelButtonColor: "#6366f1",
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`http://localhost:3000/expense/${id}`)
+                    .then(() => {
+                        refreshExpenses();
+                        Swal.fire("Terhapus!", "Expense berhasil dihapus.", "success");
+                    })
+                    .catch((err) => {
+                        console.log("Error deleting expense:", err);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Gagal menghapus!",
+                            confirmButtonColor: "#6366f1",
+                        });
+                    });
+            }
+        });
     };
 
     const startEdit = (expense) => {

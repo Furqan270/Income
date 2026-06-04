@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const Income = ({ incomes, refreshIncomes }) => {
     const [editingId, setEditingId] = useState(null);
@@ -22,13 +23,32 @@ const Income = ({ incomes, refreshIncomes }) => {
     }, [incomes, currentPage]);
 
     const handleDelete = (id) => {
-        axios.delete(`http://localhost:3000/income/${id}`)
-            .then(() => {
-                refreshIncomes();
-            })
-            .catch((err) => {
-                console.log("Error deleting income:", err);
-            });
+        Swal.fire({
+            title: "Hapus income ini?",
+            text: "Data yang dihapus tidak bisa dikembalikan!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#f43f5e",
+            cancelButtonColor: "#6366f1",
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`http://localhost:3000/income/${id}`)
+                    .then(() => {
+                        refreshIncomes();
+                        Swal.fire("Terhapus!", "Income berhasil dihapus.", "success");
+                    })
+                    .catch((err) => {
+                        console.log("Error deleting income:", err);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Gagal menghapus!",
+                            confirmButtonColor: "#6366f1",
+                        });
+                    });
+            }
+        });
     };
 
     const startEdit = (income) => {
