@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import Swal from "sweetalert2";
 const InputForm = ({ onIncomeAdded, onExpenseAdded }) => {
 
     const [name, setName] = useState("")
@@ -31,11 +31,24 @@ const InputForm = ({ onIncomeAdded, onExpenseAdded }) => {
             })
             .catch((err) => {
                 console.log(err)
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Something went wrong!",
+                });
             })
     }, [])
 
     const incomeHandler = () => {
-        if (!name.trim() || !total) return;
+        if (!name.trim() || !total) {
+            Swal.fire({
+                icon: "warning",
+                title: "Form belum lengkap!",
+                text: "Nama transaksi dan total harus diisi dulu.",
+                confirmButtonColor: "#6366f1",
+            });
+            return;
+        }
         const url = "http://localhost:3000";
         axios.post(url + "/income", {
             id: String(nextIncomeId),
@@ -44,6 +57,7 @@ const InputForm = ({ onIncomeAdded, onExpenseAdded }) => {
         })
             .then((res) => {
                 console.log(res.data);
+                Swal.fire("Added Income!");
                 setName("");
                 setTotal("");
                 setNextIncomeId((prev) => prev + 1);
@@ -57,7 +71,15 @@ const InputForm = ({ onIncomeAdded, onExpenseAdded }) => {
     };
 
     const expenseHandler = () => {
-        if (!name.trim() || !total) return;
+        if (!name.trim() || !total) {
+            Swal.fire({
+                icon: "warning",
+                title: "Form belum lengkap!",
+                text: "Nama transaksi dan total harus diisi dulu.",
+                confirmButtonColor: "#6366f1",
+            });
+            return;
+        }
         const url = "http://localhost:3000";
         axios.post(url + "/expense", {
             id: String(nextExpenseId),
@@ -66,6 +88,7 @@ const InputForm = ({ onIncomeAdded, onExpenseAdded }) => {
         })
             .then((res) => {
                 console.log(res.data);
+                Swal.fire("Added Expense!");
                 setName("");
                 setTotal("");
                 setNextExpenseId((prev) => prev + 1);
