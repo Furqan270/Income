@@ -73,9 +73,11 @@ const Income = ({ incomes, refreshIncomes }) => {
             .then(() => {
                 refreshIncomes();
                 cancelEdit();
+                Swal.fire("Terubah!", "Income berhasil diubah.", "success");
             })
             .catch((err) => {
                 console.log("Error updating income:", err);
+                Swal.fire("Gagal!", "Income gagal diubah.", "error");
             });
     };
 

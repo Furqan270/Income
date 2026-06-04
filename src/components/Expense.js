@@ -74,9 +74,11 @@ const Expense = ({ expenses, refreshExpenses }) => {
             .then(() => {
                 refreshExpenses();
                 cancelEdit();
+                Swal.fire("Terubah!", "Expense berhasil diubah.", "success");
             })
             .catch((err) => {
                 console.log("Error updating expense:", err);
+                Swal.fire("Gagal!", "Expense gagal diubah.", "error");
             });
     };
 
