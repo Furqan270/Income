@@ -82,7 +82,7 @@ const InputForm = ({ onIncomeAdded, onExpenseAdded }) => {
         }
         const url = "http://localhost:3000";
         axios.post(url + "/expense", {
-            id: String(nextExpenseId),
+            id: Number(nextExpenseId),
             name: name,
             total: Number(total)
         })
